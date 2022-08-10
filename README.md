@@ -27,13 +27,15 @@ USAGE
   asanaman [global flags] <subcommand> [flags] [args]
 
 SUBCOMMANDS
-  me            
-  project-list  
+  me              
+  workspace-list  
+  project-list    
 
 FLAGS
   -cache-path .asanaman-cache  cache path
   -debug false                 debug mode
   -domain ...                  Asana workspace
+  -json false                  return JSON output when possible
   -token ...                   Asana token
 exit status 1
 ```
