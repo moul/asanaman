@@ -5,6 +5,10 @@ NPM_PACKAGES ?=	.
 
 include rules.mk
 
+run: fmt
+	@# requires $ASANAMAN_TOKEN
+	go run ./cmd/asanaman --debug info
+
 generate: install
 	GO111MODULE=off go get github.com/campoy/embedmd
 	mkdir -p .tmp

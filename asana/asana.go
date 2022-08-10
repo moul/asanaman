@@ -1,7 +1,14 @@
 package asana
 
-type Client struct{}
+type Client struct {
+	token  string
+	domain string
+}
 
-func New() (*Client, error) {
-	return &Client{}, nil
+func New(token, domain string) (*Client, error) {
+	client := Client{
+		token:  token,
+		domain: domain,
+	}
+	return &client, nil
 }
