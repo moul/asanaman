@@ -27,7 +27,7 @@ func main() {
 	}
 }
 
-var opts struct {
+var g struct {
 	Debug      bool
 	Token      string `json:"-"` // sensitive
 	Domain     string
@@ -38,13 +38,13 @@ var opts struct {
 
 func run(args []string) error {
 	// defaults
-	opts.CachePath = filepath.Join(".", ".asanaman-cache")
+	g.CachePath = filepath.Join(".", ".asanaman-cache")
 
 	commonFlags := func(fs *flag.FlagSet) {
-		fs.BoolVar(&opts.Debug, "debug", opts.Debug, "debug mode")
-		fs.StringVar(&opts.Token, "token", opts.Token, "Asana token")
-		fs.StringVar(&opts.Domain, "domain", opts.Domain, "Asana workspace")
-		fs.StringVar(&opts.CachePath, "cache-path", opts.CachePath, "cache path")
+		fs.BoolVar(&g.Debug, "debug", g.Debug, "debug mode")
+		fs.StringVar(&g.Token, "token", g.Token, "Asana token")
+		fs.StringVar(&g.Domain, "domain", g.Domain, "Asana workspace")
+		fs.StringVar(&g.CachePath, "cache-path", g.CachePath, "cache path")
 	}
 
 	// parse CLI
@@ -56,16 +56,17 @@ func run(args []string) error {
 		FFOptions:      []ff.Option{ff.WithEnvVarPrefix("asanaman")},
 		Subcommands: []*climan.Command{
 			{Name: "me", Exec: doMe, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
+			{Name: "project-list", Exec: doProjectList, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
 		},
 	}
 	if err := root.Parse(args); err != nil {
 		return fmt.Errorf("parse error: %w", err)
 	}
 
-	if opts.Token == "" {
+	if g.Token == "" {
 		return fmt.Errorf("missing asana token (see https://app.asana.com/0/my-apps)")
 	}
-	if opts.Domain == "" {
+	if g.Domain == "" {
 		return fmt.Errorf("missing asana domain/workspace")
 	}
 
@@ -79,21 +80,21 @@ func run(args []string) error {
 
 		// logger
 		config := zapconfig.New().SetPreset("light-console")
-		if opts.Debug {
+		if g.Debug {
 			config = config.SetLevel(zapcore.DebugLevel)
 		} else {
 			config = config.SetLevel(zapcore.InfoLevel)
 		}
 		var err error
-		opts.rootLogger, err = config.Build()
+		g.rootLogger, err = config.Build()
 		if err != nil {
 			return fmt.Errorf("logger init: %w", err)
 		}
 
 		// asana
 		{
-			logger := opts.rootLogger.Named("client")
-			opts.client, err = asana.New(opts.Token, opts.Domain, opts.CachePath, logger)
+			logger := g.rootLogger.Named("client")
+			g.client, err = asana.New(g.Token, g.Domain, g.CachePath, logger)
 			if err != nil {
 				return fmt.Errorf("asana client: %w", err)
 			}

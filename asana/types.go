@@ -20,3 +20,11 @@ type User struct {
 	ResourceType string      `json:"resource_type,omitempty"`
 	Workspaces   []Workspace `json:"workspaces,omitempty"`
 }
+
+type Project struct {
+	GID          string `json:"gid,omitempty"`
+	Name         string `json:"name,omitempty"`
+	ResourceType string `json:"resource_type,omitempty"`
+}
+
+type Projects []Project

@@ -14,10 +14,9 @@ func doMe(ctx context.Context, args []string) error {
 		return flag.ErrHelp
 	}
 
-	opts.rootLogger.Debug("init", zap.Strings("args", args), zap.Any("opts", opts))
-	fmt.Println(opts.client)
+	g.rootLogger.Debug("me", zap.Strings("args", args), zap.Any("g", g))
 
-	ret, err := opts.client.Me(ctx)
+	ret, err := g.client.Me(ctx)
 	if err != nil {
 		return fmt.Errorf("me: %w", err)
 	}
