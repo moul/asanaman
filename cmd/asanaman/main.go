@@ -27,13 +27,22 @@ func main() {
 	}
 }
 
+// nolint:maligned
 var g struct {
-	Debug      bool
-	Token      string `json:"-"` // sensitive
-	Domain     string
-	CachePath  string
+	// opts
+	Debug     bool
+	Token     string `json:"-"` // sensitive
+	Domain    string
+	CachePath string
+
+	// internal
 	rootLogger *zap.Logger
 	client     *asana.Client
+
+	// subcommand opts
+	FilterWorkspace string `json:"workspace,omitempty"`
+	FilterTeam      string `json:"team,omitempty"`
+	FilterArchived  bool   `json:"archived,omitempty"`
 }
 
 func run(args []string) error {
@@ -56,7 +65,12 @@ func run(args []string) error {
 		FFOptions:      []ff.Option{ff.WithEnvVarPrefix("asanaman")},
 		Subcommands: []*climan.Command{
 			{Name: "me", Exec: doMe, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
-			{Name: "project-list", Exec: doProjectList, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
+			{Name: "project-list", Exec: doProjectList, FlagSetBuilder: func(fs *flag.FlagSet) {
+				commonFlags(fs)
+				fs.StringVar(&g.FilterWorkspace, "filter-workspace", g.FilterWorkspace, "filter by workspace")
+				fs.StringVar(&g.FilterTeam, "filter-team", g.FilterTeam, "filter by team")
+				fs.BoolVar(&g.FilterArchived, "filter-archived", g.FilterArchived, "filter by archive status")
+			}},
 		},
 	}
 	if err := root.Parse(args); err != nil {

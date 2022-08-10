@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/google/go-querystring/query"
 	"github.com/gregjones/httpcache"
 	"github.com/gregjones/httpcache/diskcache"
 	"go.uber.org/multierr"
@@ -62,7 +63,7 @@ type ReqOpts struct {
 	Path   string
 	Data   interface{}
 	Form   url.Values
-	// opt *Filter
+	Opts   interface{}
 }
 
 type request struct {
@@ -87,11 +88,22 @@ func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) err
 	logger := c.logger
 	defer func() { logger.Debug("req") }()
 	// compute path
-	rel, err := url.Parse(opts.Path)
+	u, err := url.Parse(opts.Path)
 	if err != nil {
 		return fmt.Errorf("invalid path: %w", err)
 	}
-	u := c.baseURL.ResolveReference(rel)
+	if opts.Opts != nil {
+		qs, err := query.Values(opts.Opts)
+		if err != nil {
+			return fmt.Errorf("invaid filter opts: %w", err)
+		}
+		u.RawQuery = qs.Encode()
+	}
+	rel, err := url.Parse(u.String())
+	if err != nil {
+		return fmt.Errorf("invalid path: %w", err)
+	}
+	u = c.baseURL.ResolveReference(rel)
 	logger = logger.With(zap.String("u", u.String()))
 
 	// compute input body
@@ -109,6 +121,9 @@ func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) err
 	}
 
 	// init request
+	if opts.Method == "" {
+		opts.Method = "GET"
+	}
 	req, err := http.NewRequest(opts.Method, u.String(), body)
 	if err != nil {
 		return fmt.Errorf("create request: %w", err)
