@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/google/go-querystring/query"
 	"github.com/gregjones/httpcache"
@@ -86,7 +87,8 @@ func (e asanaError) Error() string {
 
 func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) error {
 	logger := c.logger
-	defer func() { logger.Debug("req") }()
+	start := time.Now()
+	defer func() { logger.Debug("req", zap.Duration("elapsed", time.Since(start))) }()
 	// compute path
 	u, err := url.Parse(opts.Path)
 	if err != nil {
@@ -104,7 +106,7 @@ func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) err
 		return fmt.Errorf("invalid path: %w", err)
 	}
 	u = c.baseURL.ResolveReference(rel)
-	logger = logger.With(zap.String("u", u.String()))
+	logger = logger.With(zap.String("url", u.String()))
 
 	// compute input body
 	var body io.Reader
@@ -114,16 +116,19 @@ func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) err
 		if err != nil {
 			return fmt.Errorf("encode body: %w", err)
 		}
-		c.logger.Debug("")
+		logger = logger.With(zap.Int("input-data-len", len(b)))
 		body = bytes.NewReader(b)
 	case opts.Form != nil:
-		body = strings.NewReader(opts.Form.Encode())
+		encoded := opts.Form.Encode()
+		body = strings.NewReader(encoded)
+		logger = logger.With(zap.Int("input-form-len", len(encoded)))
 	}
 
 	// init request
 	if opts.Method == "" {
 		opts.Method = "GET"
 	}
+	logger = logger.With(zap.String("method", opts.Method))
 	req, err := http.NewRequest(opts.Method, u.String(), body)
 	if err != nil {
 		return fmt.Errorf("create request: %w", err)
