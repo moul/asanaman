@@ -17,3 +17,8 @@ func (c *Client) ProjectList(ctx context.Context, opts ProjectListOpts) (*Projec
 	var projects Projects
 	return &projects, c.Request(ctx, ReqOpts{Path: "projects", Opts: opts}, &projects)
 }
+
+func (c *Client) WorkspaceList(ctx context.Context) (*Workspaces, error) {
+	var workspaces Workspaces
+	return &workspaces, c.Request(ctx, ReqOpts{Path: "workspaces"}, &workspaces)
+}

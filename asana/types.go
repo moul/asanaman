@@ -1,11 +1,5 @@
 package asana
 
-type Workspace struct {
-	GID          string `json:"gid,omitempty"`
-	Name         string `json:"name,omitempty"`
-	ResourceType string `json:"resource_type,omitempty"`
-}
-
 type User struct {
 	GID   string `json:"gid,omitempty"`
 	Email string `json:"email,omitempty"`
@@ -28,3 +22,11 @@ type Project struct {
 }
 
 type Projects []Project
+
+type Workspace struct {
+	GID          string `json:"gid,omitempty"`
+	Name         string `json:"name,omitempty"`
+	ResourceType string `json:"resource_type,omitempty"`
+}
+
+type Workspaces []Workspace
