@@ -1,0 +1,13 @@
+HTTP/1.1 302 Found
+Connection: keep-alive
+Datacenter-Time-End: 1660117185.120
+Date: Wed, 10 Aug 2022 07:39:45 GMT
+Location: /-/login?u=%2Fusers%2Fme
+Server: nginx
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Asana-Pageload-App: pageload-prod
+X-Asana-Pageload-Pod: pageload-5b6b5cfcf-bdjcw
+X-Loadbalancer: prod-lb021.ec2
+X-Robots-Tag: none
+Content-Length: 0
+
