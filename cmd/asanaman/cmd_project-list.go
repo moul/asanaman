@@ -30,7 +30,7 @@ func doProjectList(ctx context.Context, args []string) error {
 	}
 	g.rootLogger.Debug("projects", zap.Int("count", len(*ret)))
 
-	if g.JsonFormat {
+	if g.JSONFormat {
 		fmt.Println(u.PrettyJSON(ret))
 		return nil
 	}

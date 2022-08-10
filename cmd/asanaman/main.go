@@ -33,7 +33,7 @@ var g struct {
 	Debug      bool
 	Token      string `json:"-"` // sensitive
 	Domain     string
-	JsonFormat bool
+	JSONFormat bool
 	CachePath  string
 
 	// internal
@@ -55,7 +55,7 @@ func run(args []string) error {
 		fs.StringVar(&g.Token, "token", g.Token, "Asana token")
 		fs.StringVar(&g.Domain, "domain", g.Domain, "Asana workspace")
 		fs.StringVar(&g.CachePath, "cache-path", g.CachePath, "cache path")
-		fs.BoolVar(&g.JsonFormat, "json", g.JsonFormat, "return JSON output when possible")
+		fs.BoolVar(&g.JSONFormat, "json", g.JSONFormat, "return JSON output when possible")
 	}
 
 	// parse CLI

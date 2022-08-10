@@ -24,7 +24,7 @@ func doWorkspaceList(ctx context.Context, args []string) error {
 	}
 	g.rootLogger.Debug("workspaces", zap.Int("count", len(*ret)))
 
-	if g.JsonFormat {
+	if g.JSONFormat {
 		fmt.Println(u.PrettyJSON(ret))
 		return nil
 	}
