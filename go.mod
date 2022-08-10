@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/google/go-querystring v1.1.0
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
+	github.com/olekukonko/tablewriter v0.0.5
 	github.com/peterbourgon/ff/v3 v3.3.0
 	github.com/tailscale/depaware v0.0.0-20210622194025-720c4b409502
 	go.uber.org/goleak v1.1.12
@@ -19,6 +20,7 @@ require (
 
 require (
 	github.com/google/btree v1.1.2 // indirect
+	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e // indirect
 	go.uber.org/atomic v1.7.0 // indirect

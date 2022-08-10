@@ -30,10 +30,11 @@ func main() {
 // nolint:maligned
 var g struct {
 	// opts
-	Debug     bool
-	Token     string `json:"-"` // sensitive
-	Domain    string
-	CachePath string
+	Debug      bool
+	Token      string `json:"-"` // sensitive
+	Domain     string
+	JsonFormat bool
+	CachePath  string
 
 	// internal
 	rootLogger *zap.Logger
@@ -54,6 +55,7 @@ func run(args []string) error {
 		fs.StringVar(&g.Token, "token", g.Token, "Asana token")
 		fs.StringVar(&g.Domain, "domain", g.Domain, "Asana workspace")
 		fs.StringVar(&g.CachePath, "cache-path", g.CachePath, "cache path")
+		fs.BoolVar(&g.JsonFormat, "json", g.JsonFormat, "return JSON output when possible")
 	}
 
 	// parse CLI
