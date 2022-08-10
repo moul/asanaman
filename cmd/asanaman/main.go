@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"path/filepath"
 
 	"github.com/peterbourgon/ff/v3"
 	"go.uber.org/zap"
@@ -30,15 +31,20 @@ var opts struct {
 	Debug      bool
 	Token      string `json:"-"` // sensitive
 	Domain     string
+	CachePath  string
 	rootLogger *zap.Logger
 	client     *asana.Client
 }
 
 func run(args []string) error {
+	// defaults
+	opts.CachePath = filepath.Join(".", ".asanaman-cache")
+
 	commonFlags := func(fs *flag.FlagSet) {
 		fs.BoolVar(&opts.Debug, "debug", opts.Debug, "debug mode")
 		fs.StringVar(&opts.Token, "token", opts.Token, "Asana token")
 		fs.StringVar(&opts.Domain, "domain", opts.Domain, "Asana workspace")
+		fs.StringVar(&opts.CachePath, "cache-path", opts.CachePath, "cache path")
 	}
 
 	// parse CLI
@@ -85,9 +91,12 @@ func run(args []string) error {
 		}
 
 		// asana
-		opts.client, err = asana.New(opts.Token, opts.Domain)
-		if err != nil {
-			return fmt.Errorf("asana client: %w", err)
+		{
+			logger := opts.rootLogger.Named("client")
+			opts.client, err = asana.New(opts.Token, opts.Domain, opts.CachePath, logger)
+			if err != nil {
+				return fmt.Errorf("asana client: %w", err)
+			}
 		}
 	}
 
