@@ -65,6 +65,7 @@ func run(args []string) error {
 		FFOptions:      []ff.Option{ff.WithEnvVarPrefix("asanaman")},
 		Subcommands: []*climan.Command{
 			{Name: "me", Exec: doMe, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
+			{Name: "workspace-list", Exec: doWorkspaceList, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
 			{Name: "project-list", Exec: doProjectList, FlagSetBuilder: func(fs *flag.FlagSet) {
 				commonFlags(fs)
 				fs.StringVar(&g.FilterWorkspace, "filter-workspace", g.FilterWorkspace, "filter by workspace")
