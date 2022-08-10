@@ -2,6 +2,4 @@ package asana
 
 import "errors"
 
-var (
-	ErrUnauthorized = errors.New("asana: unauthorized")
-)
+var ErrUnauthorized = errors.New("asana: unauthorized")

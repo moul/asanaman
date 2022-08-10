@@ -7,8 +7,7 @@ func (c *Client) Me(ctx context.Context) (*User, error) {
 	return &user, c.Request(ctx, ReqOpts{Path: "users/me"}, &user)
 }
 
-type ProjectListOpts struct {
-}
+type ProjectListOpts struct{}
 
 func (c *Client) ProjectList(ctx context.Context, opts ProjectListOpts) (*Projects, error) {
 	var projects Projects

@@ -64,10 +64,10 @@ func run(args []string) error {
 	}
 
 	if g.Token == "" {
-		return fmt.Errorf("missing asana token (see https://app.asana.com/0/my-apps)")
+		return fmt.Errorf("missing asana token (see https://app.asana.com/0/my-apps)") // nolint:goerr113
 	}
 	if g.Domain == "" {
-		return fmt.Errorf("missing asana domain/workspace")
+		return fmt.Errorf("missing asana domain/workspace") // nolint:goerr113
 	}
 
 	// init runtime

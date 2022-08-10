@@ -49,7 +49,7 @@ func New(token, domain, cachePath string, logger *zap.Logger) (*Client, error) {
 		Transport: httpcache.NewTransport(
 			hcfilters.MaxSize( // skip caching results > 10Mb
 				diskcache.New(cachePath),
-				10*1024*1024,
+				10*1024*1024, // nolint:gomnd
 			),
 		),
 	}
@@ -94,7 +94,19 @@ func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) err
 	u := c.baseURL.ResolveReference(rel)
 	logger = logger.With(zap.String("u", u.String()))
 
+	// compute input body
 	var body io.Reader
+	switch {
+	case opts.Data != nil:
+		b, err := json.Marshal(request{Data: opts.Data})
+		if err != nil {
+			return fmt.Errorf("encode body: %w", err)
+		}
+		c.logger.Debug("")
+		body = bytes.NewReader(b)
+	case opts.Form != nil:
+		body = strings.NewReader(opts.Form.Encode())
+	}
 
 	// init request
 	req, err := http.NewRequest(opts.Method, u.String(), body)
@@ -108,17 +120,8 @@ func (c *Client) Request(ctx context.Context, opts ReqOpts, ret interface{}) err
 	switch {
 	case opts.Data != nil:
 		req.Header.Set("Content-Type", "application/json")
-
-		b, err := json.Marshal(request{Data: opts.Data})
-		if err != nil {
-			return fmt.Errorf("encode body: %w", err)
-		}
-		c.logger.Debug("")
-		body = bytes.NewReader(b)
 	case opts.Form != nil:
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-		body = strings.NewReader(opts.Form.Encode())
 	}
 
 	// perform request

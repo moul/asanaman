@@ -23,11 +23,19 @@
 [embedmd]:# (.tmp/usage.txt console)
 ```console
 foo@bar:~$ asanaman
- __ _  ___ __ _  _ _   __ _  _ __   __ _  _ _
-/ _` |(_-</ _` || ' \ / _` || '  \ / _` || ' \
-\__,_|/__/\__,_||_||_|\__,_||_|_|_|\__,_||_||_|
-12 CPUs, /home/moul/.local/bin/asanaman, fwrz, go1.18
-[]
+USAGE
+  asanaman [global flags] <subcommand> [flags] [args]
+
+SUBCOMMANDS
+  me            
+  project-list  
+
+FLAGS
+  -cache-path .asanaman-cache  cache path
+  -debug false                 debug mode
+  -domain ...                  Asana workspace
+  -token ...                   Asana token
+exit status 1
 ```
 
 ## Install
