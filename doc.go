@@ -26,4 +26,4 @@
 //	|/  |       |  \    \ /                    /  ' \/ _ \/ // / / |
 //	||  |       |  |    | |                   /_/_/_/\___/\_,_/_/  |
 //	+--------------------------------------------------------------+
-package main // import "moul.io/asanaman"
+package asanaman // import "moul.io/asanaman"

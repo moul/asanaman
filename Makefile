@@ -1,6 +1,6 @@
 GOPKG ?=	moul.io/asanaman
 DOCKER_IMAGE ?=	moul/asanaman
-GOBINS ?=	.
+GOBINS ?=	./cmd/asanaman
 NPM_PACKAGES ?=	.
 
 include rules.mk
