@@ -3,7 +3,7 @@ package asana
 type Workspace struct {
 	GID          string `json:"gid,omitempty"`
 	Name         string `json:"name,omitempty"`
-	Organization bool   `json:"is_organization,omitempty"`
+	ResourceType string `json:"resource_type,omitempty"`
 }
 
 type User struct {

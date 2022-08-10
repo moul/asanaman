@@ -7,7 +7,7 @@ include rules.mk
 
 run: fmt
 	@# requires $ASANAMAN_TOKEN
-	go run ./cmd/asanaman --debug info
+	go run ./cmd/asanaman --debug me
 
 generate: install
 	GO111MODULE=off go get github.com/campoy/embedmd

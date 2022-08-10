@@ -9,7 +9,7 @@ import (
 	"moul.io/u"
 )
 
-func doInfo(ctx context.Context, args []string) error {
+func doMe(ctx context.Context, args []string) error {
 	if len(args) > 0 {
 		return flag.ErrHelp
 	}

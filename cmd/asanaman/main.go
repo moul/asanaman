@@ -55,7 +55,7 @@ func run(args []string) error {
 		FlagSetBuilder: commonFlags,
 		FFOptions:      []ff.Option{ff.WithEnvVarPrefix("asanaman")},
 		Subcommands: []*climan.Command{
-			{Name: "info", Exec: doInfo, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
+			{Name: "me", Exec: doMe, FlagSetBuilder: func(fs *flag.FlagSet) { commonFlags(fs) }},
 		},
 	}
 	if err := root.Parse(args); err != nil {
