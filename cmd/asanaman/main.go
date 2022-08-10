@@ -27,6 +27,7 @@ func main() {
 	}
 }
 
+// nolint:maligned
 var g struct {
 	// opts
 	Debug     bool
