@@ -1,6 +1,9 @@
 package asana
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 func (c *Client) Me(ctx context.Context) (*User, error) {
 	var user User
@@ -21,4 +24,32 @@ func (c *Client) ProjectList(ctx context.Context, opts ProjectListOpts) (*Projec
 func (c *Client) WorkspaceList(ctx context.Context) (*Workspaces, error) {
 	var workspaces Workspaces
 	return &workspaces, c.Request(ctx, ReqOpts{Path: "workspaces"}, &workspaces)
+}
+
+type TeamListOpts struct {
+	Workspace    string `url:"workspace,omitempty"`
+	User         string `url:"user,omitempty"`
+	Organization string `url:"organization,omitempty"`
+	OptFields    string `url:"opt_fields,omitempty"`
+}
+
+func (c *Client) TeamList(ctx context.Context, opts TeamListOpts) (*Teams, error) {
+	var (
+		getTeamsForUser      = opts.User != "" && opts.Organization != "" && opts.Workspace == ""
+		getTeamsForWorkspace = opts.User == "" && opts.Organization == "" && opts.Workspace != ""
+	)
+
+	if opts.OptFields == "" {
+		opts.OptFields = "name,resource_type,description,html_description,organization,permalink_url,visibility,organization.resource_type,organization.name"
+	}
+
+	switch {
+	case getTeamsForUser:
+	case getTeamsForWorkspace:
+	default:
+		return nil, fmt.Errorf("invalid opts: should have Workspace OR User+Organization") // nolint:goerr113
+	}
+
+	var teams Teams
+	return &teams, c.Request(ctx, ReqOpts{Path: "teams", Opts: opts}, &teams)
 }

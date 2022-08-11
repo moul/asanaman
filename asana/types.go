@@ -30,3 +30,16 @@ type Workspace struct {
 }
 
 type Workspaces []Workspace
+
+type Team struct {
+	GID             string    `json:"gid,omitempty"`
+	Name            string    `json:"name,omitempty"`
+	ResourceType    string    `json:"resource_type,omitempty"`
+	Description     string    `json:"description,omitempty"`
+	HTMLDescription string    `json:"html_description,omitempty"`
+	Workspace       Workspace `json:"organization,omitempty"`
+	PermalinkURL    string    `json:"permalink_url,omitempty"`
+	Visibility      string    `json:"visibility,omitempty"`
+}
+
+type Teams []Team

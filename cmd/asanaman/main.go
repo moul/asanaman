@@ -41,9 +41,11 @@ var g struct {
 	client     *asana.Client
 
 	// subcommand opts
-	FilterWorkspace string `json:"workspace,omitempty"`
-	FilterTeam      string `json:"team,omitempty"`
-	FilterArchived  bool   `json:"archived,omitempty"`
+	FilterWorkspace    string `json:"workspace,omitempty"`
+	FilterTeam         string `json:"team,omitempty"`
+	FilterArchived     bool   `json:"archived,omitempty"`
+	FilterUser         string `json:"user,omitempty"`
+	FilterOrganization string `json:"organization,omitempty"`
 }
 
 func run(args []string) error {
@@ -73,6 +75,12 @@ func run(args []string) error {
 				fs.StringVar(&g.FilterWorkspace, "filter-workspace", g.FilterWorkspace, "filter by workspace")
 				fs.StringVar(&g.FilterTeam, "filter-team", g.FilterTeam, "filter by team")
 				fs.BoolVar(&g.FilterArchived, "filter-archived", g.FilterArchived, "filter by archive status")
+			}},
+			{Name: "team-list", Exec: doTeamList, FlagSetBuilder: func(fs *flag.FlagSet) {
+				commonFlags(fs)
+				fs.StringVar(&g.FilterWorkspace, "filter-workspace", g.FilterWorkspace, "filter by workspace")
+				fs.StringVar(&g.FilterUser, "filter-user", g.FilterUser, "filter by user")
+				fs.StringVar(&g.FilterOrganization, "filter-organization", g.FilterOrganization, "filter by organization")
 			}},
 		},
 	}
