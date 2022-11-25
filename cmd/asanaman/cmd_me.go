@@ -16,7 +16,7 @@ func doMe(ctx context.Context, args []string) error {
 
 	g.rootLogger.Debug("me", zap.Strings("args", args), zap.Any("g", g))
 
-	ret, err := g.client.Me(ctx)
+	ret, err := g.client.Me(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("me: %w", err)
 	}
