@@ -24,7 +24,7 @@ func doTeamList(ctx context.Context, args []string) error {
 		User:         g.FilterUser,
 		Organization: g.FilterOrganization,
 	}
-	ret, err := g.client.TeamList(ctx, opts)
+	ret, err := g.client.TeamList(ctx, &opts)
 	if err != nil {
 		return fmt.Errorf("team-list: %w", err)
 	}

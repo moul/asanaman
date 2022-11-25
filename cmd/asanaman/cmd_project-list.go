@@ -24,7 +24,7 @@ func doProjectList(ctx context.Context, args []string) error {
 		Team:      g.FilterTeam,
 		Archived:  g.FilterArchived,
 	}
-	ret, err := g.client.ProjectList(ctx, opts)
+	ret, err := g.client.ProjectList(ctx, &opts)
 	if err != nil {
 		return fmt.Errorf("project-list: %w", err)
 	}
