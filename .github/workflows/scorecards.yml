@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -30,7 +30,7 @@ jobs:
         env:
           SCORECARD_READ_TOKEN: ${{ secrets.SCORECARD_READ_TOKEN }}
         if: env.SCORECARD_READ_TOKEN != null
-        uses: ossf/scorecard-action@865b4092859256271290c77adbd10a43f4779972 # v1.0.4
+        uses: ossf/scorecard-action@2d1146689b8cda280b9bc96326124645441f03bc # v2.4.4
         with:
           results_file: results.sarif
           results_format: sarif
@@ -59,6 +59,6 @@ jobs:
         env:
           SCORECARD_READ_TOKEN: ${{ secrets.SCORECARD_READ_TOKEN }}
         if: env.SCORECARD_READ_TOKEN != null
-        uses: github/codeql-action/upload-sarif@v2 # v1.0.26
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: results.sarif
